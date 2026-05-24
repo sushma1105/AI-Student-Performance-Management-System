@@ -133,7 +133,7 @@ def edit_grade(roll_number, subject):
         new_grade = float(request.form["new_grade"])
         # VALIDATION
         if new_grade < 0 or new_grade > 100:
-            return "Grade must be between 0 and 100"
+            flash("Grade must be between 0 and 100", "danger")
         update_grade_db(
             roll_number,
             subject,
@@ -157,8 +157,9 @@ def update_grade():
         new_grade = float(request.form["new_grade"])
 
         # VALIDATION
-        if new_grade < 0 or new_grade > 100:
-            return "Grade must be between 0 and 100"
+        if grade < 0 or grade > 100:
+            flash("Grade must be between 0 and 100", "danger")
+            return redirect(f"/edit_grade/{roll_number}/{subject}")
 
         update_grade_db(
             roll_number,
@@ -201,7 +202,8 @@ def add_grade():
             return redirect("/add_grade")
 
         if not student_exists(roll_number):
-            return "Student not found!"
+            flash("Student not found!")
+            return redirect("/add_grade")
 
         add_grade_db(roll_number, subject, grade)
         flash("Grade Added Successfully!", "success")
