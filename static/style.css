@@ -1,0 +1,39 @@
+/* NAVBAR */
+.navbar {
+    padding: 15px;
+}
+
+/* TABLE */
+table {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* SEARCH BAR */
+input.form-control {
+    border-radius: 10px;
+}
+
+/* HOVER EFFECT */
+.btn:hover {
+    transform: scale(1.03);
+    transition: 0.2s;
+}
+/* FORM INPUTS */
+.form-control {
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* FORM CARD */
+.card {
+    border-radius: 20px;
+}
+
+/* FORM BUTTONS */
+.btn {
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+}

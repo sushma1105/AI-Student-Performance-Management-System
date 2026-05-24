@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+{% include 'navbar.html' %}
+<div class="container">
+    <h1>Student Details</h1>
+
+    <form method="POST">
+
+        <label>Enter Roll Number:</label>
+
+        <input type="text" name="roll_number" required>
+
+        <button type="submit">Search</button>
+
+    </form>
+
+    <br>
+
+    {% if student %}
+
+        <h2>Name: {{ student[0] }}</h2>
+
+        <h3>Roll Number: {{ student[1] }}</h3>
+
+        <h3>Grades:</h3>
+
+        <ul>
+            {% for subject, grade in grades %}
+
+                <li>{{ subject }} : {{ grade }}</li>
+
+            {% endfor %}
+        </ul>
+
+        <h3>Average Grade: {{ average }}</h3>
+
+    {% endif %}
+
+    <br>
+
+    <a href="/">Back to Home</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
