@@ -4,6 +4,15 @@ from database import *
 app = Flask(__name__)
 app.secret_key = "student_project_secret"
 
+@app.after_request
+def add_header(response):
+    response.headers["Cache-Control"] = (
+        "no-cache, no-store, must-revalidate"
+    )
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 # AI PERFORMANCE ANALYSIS
 def analyze_student_performance(grades):
     if not grades:
@@ -110,6 +119,8 @@ def view_students():
 # DELETE STUDENT
 @app.route("/delete_student/<roll_number>")
 def delete_student(roll_number):
+    if "user" not in session:
+        return redirect("/login")
     delete_student_db(roll_number)
 
     flash("Student Deleted Successfully!", "danger")
@@ -118,6 +129,8 @@ def delete_student(roll_number):
 # DELETE SUBJECT
 @app.route("/delete_subject/<roll_number>/<subject>")
 def delete_subject(roll_number, subject):
+    if "user" not in session:
+        return redirect("/login")
     delete_subject_db(
         roll_number,
         subject
@@ -128,7 +141,8 @@ def delete_subject(roll_number, subject):
 # EDIT GRADE
 @app.route("/edit_grade/<roll_number>/<subject>", methods=["GET", "POST"])
 def edit_grade(roll_number, subject):
-
+    if "user" not in session:
+        return redirect("/login")
     if request.method == "POST":
         new_grade = float(request.form["new_grade"])
         # VALIDATION
@@ -150,7 +164,8 @@ def edit_grade(roll_number, subject):
 # UPDATE GRADE
 @app.route("/update_grade", methods=["GET", "POST"])
 def update_grade():
-
+    if "user" not in session:
+        return redirect("/login")
     if request.method == "POST":
         roll_number = request.form["roll_number"]
         subject = request.form["subject"].strip().title()
@@ -173,7 +188,8 @@ def update_grade():
 # ADD STUDENT
 @app.route("/add_student", methods=["GET", "POST"])
 def add_student():
-
+    if "user" not in session:
+        return redirect("/login")
     if request.method == "POST":
         name = request.form["name"]
         roll_number = request.form["roll_number"]
@@ -191,7 +207,8 @@ def add_student():
 # ADD GRADE
 @app.route("/add_grade", methods=["GET", "POST"])
 def add_grade():
-
+    if "user" not in session:
+        return redirect("/login")
     if request.method == "POST":
         roll_number = request.form["roll_number"]
         subject = request.form["subject"].strip().title()
@@ -214,7 +231,8 @@ def add_grade():
 # STUDENT PROFILE PAGE
 @app.route("/student/<roll_number>")
 def student_profile(roll_number):
-
+    if "user" not in session:
+        return redirect("/login")
     student, grades = get_student_details(roll_number)
 
     if not student:
@@ -268,8 +286,7 @@ def student_details():
 # LOGOUT
 @app.route("/logout")
 def logout():
-
-    session.pop("user", None)
+    session.clear()
     flash("Logged Out Successfully!", "info")
     return redirect("/login")
 
