@@ -1,5 +1,9 @@
 import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
+from models import Student, Grade
 
+db = SQLAlchemy()
 # CONNECT DATABASE
 conn = sqlite3.connect("students.db", check_same_thread=False)
 
@@ -176,25 +180,26 @@ def get_class_average():
     return round(result, 2) if result else 0
 
 # TOP PERFORMER
+from sqlalchemy import func
+
 def get_top_performer():
 
-    cursor.execute("""
-    SELECT students.name,
-           AVG(grades.grade) as average_grade
+    top_student = db.session.query(
+        Student,
+        func.avg(Grade.grade).label("average")
+    ).join(
+        Grade,
+        Student.id == Grade.student_id
+    ).group_by(
+        Student.id
+    ).order_by(
+        func.avg(Grade.grade).desc()
+    ).first()
 
-    FROM students
+    if top_student:
+        return top_student[0]
 
-    JOIN grades
-    ON students.roll_number = grades.roll_number
-
-    GROUP BY students.roll_number
-
-    ORDER BY average_grade DESC
-
-    LIMIT 1
-    """)
-
-    return cursor.fetchone()
+    return None
 
 # SUBJECT AVERAGES
 def get_subject_averages():

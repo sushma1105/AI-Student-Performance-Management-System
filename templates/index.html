@@ -25,18 +25,75 @@
 <div class="container py-5">
 
     <!-- TITLE -->
-    <div class="text-center mb-5">
-
-        <h1 class="display-4 fw-bold text-primary">
-            Student Performance Management System
-        </h1>
-
-        <p class="text-muted">
-            Manage student records, grades, and analytics
-        </p>
-
+    <div class="dashboard-header">
+    <h1>
+        Dashboard
+    </h1>
+    <h5 class="text-muted">
+    {% if selected_semester=="All" %}
+    Overall Analytics
+    {% else %}
+    Semester {{ selected_semester }} Analytics
+    {% endif %}
+    </h5>
+    <p>
+        Student Analytics Hub • Overview of student performance and academic risk
+    </p>
+    <p class="text-center text-secondary small mb-4">
+    <i class="bi bi-clock-history"></i>
+    Last Updated:
+    {{ last_updated.strftime("%d %B %Y, %I:%M %p") }}
+    </p>
     </div>
 
+    <!--SEMESTER DROPDOWN-->
+    <div class="text-center mb-4">
+    <form method="GET"
+      class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+        <div class="d-flex align-items-center">
+        <label class="fw-bold me-2">Semester:</label>
+
+        <select name="semester"
+                class="form-select d-inline-block w-auto"
+                onchange="this.form.submit()">
+
+            <option value="All"
+            {% if selected_semester=="All" %}selected{% endif %}>
+                All
+            </option>
+            {% for sem in semesters %}
+            <option value="{{ sem }}"
+            {% if selected_semester==sem %}selected{% endif %}>
+                Semester {{ sem }}
+            </option>
+            {% endfor %}
+        </select>
+        </div>
+        <!--Branch dropdown-->
+        <div class="d-flex align-items-center">
+        <label class="fw-bold ms-4 me-2">
+            Branch:
+        </label>
+
+        <select name="branch"
+                class="form-select d-inline-block w-auto"
+                onchange="this.form.submit()">
+
+            <option value="All"
+            {% if selected_branch=="All" %}selected{% endif %}>
+                All Branches
+            </option>
+
+            {% for branch in branches %}
+            <option value="{{ branch }}"
+            {% if selected_branch==branch %}selected{% endif %}>
+                {{ branch }}
+            </option>
+            {% endfor %}
+        </select>
+        </div>
+    </form>
+    </div>
     <!-- DASHBOARD CARDS -->
     <div class="row g-4 mb-5">
 
@@ -103,7 +160,6 @@
             </div>
 
         </div>
-
         <!-- TOP PERFORMER -->
         <div class="col-md-3">
 
@@ -120,7 +176,7 @@
 
                         {% if top_performer %}
 
-                            {{ top_performer[0] }}
+                            {{ top_performer.name }}
 
                         {% else %}
 
@@ -132,106 +188,263 @@
                 </div>
             </div>
         </div>
-        <!-- CHART SECTION -->
-        <div class="card shadow-lg border-0 mb-5">
-
-            <div class="card-body">
-
-                <h3 class="text-center mb-4">
-                    Subject Performance Analytics
-                </h3>
-
-                <canvas id="subjectChart"></canvas>
-
+        <!--ATTENDANCE-->
+        <div class="col-md-6">
+            <div class="card dashboard-card shadow p-3 text-center">
+                <h4 class="text-success"> Average Attendance </h4>
+                <h2>
+                    {{ average_attendance }}%
+                </h2>
             </div>
 
         </div>
 
+        <div class="col-md-6">
+
+            <div class="card dashboard-card  shadow p-3 text-center">
+
+                <h4 class="text-danger"> Students Below 75% </h4>
+                <h2>
+                    {{ low_attendance }}
+                </h2>
+
+            </div>
+
+        </div>
+        
+        <!--risk analysis-->
+        <div class="col-md-4">
+            <div class="card dashboard-card shadow text-center p-3">
+                    <h5 class="text-success">
+                        Low Risk Students
+                    </h5>
+                    <h2>{{ low_risk }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dashboard-card shadow text-center p-3">
+                    <h5 class="text-warning">
+                        Medium Risk Students
+                    </h5>
+                    <h2>{{ medium_risk }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card dashboard-card shadow text-center p-3">
+                    <h5 class="text-danger">
+                        High Risk Students
+                    </h5>
+                    <h2>{{ high_risk }}</h2>
+                </div>
+            </div>
+        <!-- CHART SECTION -->
+        <div class="row mt-5">
+            <!-- Subject Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-lg border-0 h-100">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">
+                            Subject Performance Analytics
+                        </h3>
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Risk Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-lg border-0 h-100">
+                    <div class="card-body">
+                        <h3 class="text-center mb-4">
+                            Academic Risk Distribution
+                        </h3>
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-
+    <!--Leaderboard-->
+    <div class="card shadow-sm border-0 mt-5">
+        <div class="card-body">
+            <h3 class="text-center mb-4">
+                🏆 Top Performers
+            </h3>
+            <table class="table table-hover align-middle">
+                <thead class="table-dark"
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Roll Number</th>
+                        <th class="text-center">GPA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in top_students %}
+                    <tr>
+                        <td>
+                        {% if loop.index == 1 %}
+                        🥇
+                        {% elif loop.index == 2 %}
+                        🥈
+                        {% elif loop.index == 3 %}
+                        🥉
+                        {% else %}
+                        {{ loop.index }}
+                        {% endif %}
+                        </td>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.roll_number }}</td>
+                        <td class="text-center">
+                            {{ "%.2f"|format(student.gpa) }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- LOW ATTENDANCE STUDENTS -->
+     <div class="card shadow-sm border-0 mt-4">
+        <div class="card-body attention-card-body">
+            <h3 class="text-center mb-4">
+                ⚠ Students Needing Attention
+            </h3>
+            {% if low_attendance_students %}
+                {% for student in low_attendance_students %}
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <strong>
+                            {{ student.name }}
+                        </strong>
+                        <br>
+                        <small class="text-muted">
+                            Roll No: {{ student.roll_number }}
+                        </small>
+                    </div>
+                    <span class="badge bg-danger px-3 py-2">
+                        Attendance:
+                        {{ student.attendance }}%
+                    </span>
+                </div>
+                <hr>
+                {% endfor %}
+            {% else %}
+                <h5 class="text-center text-success">
+                    No Students Need Attention 🎉
+                </h5>
+            {% endif %}
+        </div>
+    </div>
+    <!-- RECENT ACTIVITY -->
+    <div class="card shadow-sm border-0 mt-4">
+        <div class="card-body attention-card-body">
+            <h3 class="text-center mb-4">
+                🕒 Recent Activity
+            </h3>
+            {% if recent_activities %}
+                {% for activity in recent_activities %}
+                <div class="mb-3">
+                    <strong>
+                        {{ activity.activity }}
+                    </strong>
+                    <br>
+                    <small class="text-muted">
+                        {{ activity.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                    </small>
+                </div>
+                <hr>
+                {% endfor %}
+            {% else %}
+                <h5 class="text-center text-muted">
+                    No recent activity
+                </h5>
+            {% endif %}
+        </div>
+    </div>
     <!-- ACTION SECTION -->
-    <div class="card shadow-lg border-0">
-
+    <div class="card shadow-sm border-0 mt-5">
         <div class="card-body p-5">
-
             <h3 class="text-center mb-4">
                 Quick Actions
             </h3>
-
             <div class="row g-3">
-
                 <div class="col-md-4">
-
                     <a href="/add_student"
-                       class="btn btn-primary w-100 py-3">
-
+                       class="btn quick-btn w-100 py-3">
+                        <i class="bi bi-person-plus-fill"></i>
                         Add Student
-
                     </a>
-
                 </div>
-
                 <div class="col-md-4">
-
                     <a href="/add_grade"
-                       class="btn btn-success w-100 py-3">
-
+                       class="btn quick-btn w-100 py-3">
+                       <i class="bi bi-journal-plus"></i>
                         Add Grade
-
                     </a>
-
                 </div>
-
                 <div class="col-md-4">
-
                     <a href="/view_students"
-                       class="btn btn-dark w-100 py-3">
-
+                       class="btn quick-btn w-100 py-3">
+                       <i class="bi bi-people-fill"></i>
                         View Students
-
                     </a>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 <script>
-    const subjects = [
-        {% for subject, avg in subject_averages %}
-            "{{ subject }}",
-        {% endfor %}
-    ];
-    const averages = [
-        {% for subject, avg in subject_averages %}
-            {{ avg }},
-        {% endfor %}
-    ];
-    const ctx = document.getElementById('subjectChart');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: subjects,
-            datasets: [{
-                label: 'Average Marks',
-                data: averages,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
-                }
+const subjectLabels = {{ subject_averages | map(attribute='subject') | list | tojson }};
+const subjectMarks = {{ subject_averages | map(attribute='average') | list | tojson }};
+const ctx = document.getElementById("subjectChart");
+new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: subjectLabels,
+        datasets: [{
+            label: "Average Marks",
+            data: subjectMarks,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100
             }
         }
-    });
+    }
+});
+
+const riskCtx =
+document.getElementById("riskChart");
+
+new Chart(riskCtx, {
+
+    type: "pie",
+
+    data: {
+
+        labels: [
+            "Low Risk",
+            "Medium Risk",
+            "High Risk"
+        ],
+
+        datasets: [{
+
+            data: [
+                {{ low_risk }},
+                {{ medium_risk }},
+                {{ high_risk }}
+            ]
+
+        }]
+    }
+});
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
