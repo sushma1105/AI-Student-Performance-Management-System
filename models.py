@@ -86,6 +86,14 @@ class Grade(db.Model):
     db.String(20),
     default="1"
     )
+    __table_args__ = (
+    db.UniqueConstraint(
+        "student_id",
+        "subject",
+        "semester",
+        name="unique_student_subject_semester"
+    ),
+    )
 
 class Admin(db.Model):
 
