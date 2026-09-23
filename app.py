@@ -540,7 +540,7 @@ def home():
     )
     recent_activities = Activity.query.order_by(
     Activity.created_at.desc()
-    ).limit(10).all()
+    ).limit(5).all()
     return render_template(
         "index.html",
         total_students=total_students,
@@ -561,7 +561,27 @@ def home():
         branches=branches,
         last_updated=datetime.now(),
         recent_activities=recent_activities, )
+#view activity
+@app.route("/activity")
+def activity():
 
+    if "user" not in session:
+        return redirect("/login")
+
+    if session.get("role") != "admin":
+        flash("Access Denied!", "danger")
+        return redirect(
+            f"/student/{session['roll_number']}"
+        )
+
+    activities = Activity.query.order_by(
+        Activity.created_at.desc()
+    ).all()
+
+    return render_template(
+        "activity.html",
+        activities=activities
+    )
 # VIEW ALL STUDENTS
 @app.route("/view_students")
 def view_students():
@@ -825,11 +845,13 @@ def add_grade():
         # CHECK IF SUBJECT ALREADY EXISTS
         existing_grade = Grade.query.filter_by(
             student_id=student.id,
-            subject=subject
+            subject=subject,
+            semester=semester
         ).first()
 
         if existing_grade:
-            flash(f"{subject} grade already exists for this student!","danger")
+            flash(f"{subject} grade already exists for this student!"
+                  f"in Semester {semester}!","danger")
             return redirect("/add_grade")
         # CREATE NEW GRADE
         new_grade = Grade(

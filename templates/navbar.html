@@ -50,3 +50,69 @@
         </div>
     </div>
 </nav>
+<!-- GLOBAL LOADING OVERLAY -->
+<div id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
+<script>
+    // Show loading spinner when a form is submitted
+    document.addEventListener("submit", function (event) {
+
+        const form = event.target;
+        const overlay = document.getElementById("loading-overlay");
+
+        if (overlay) {
+            overlay.style.display = "flex";
+        }
+
+        // Find the submit button
+        const submitButton = form.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+        if (submitButton) {
+
+            // Prevent clicking the button again
+            submitButton.disabled = true;
+
+            // Change button text
+            if (submitButton.tagName === "BUTTON") {
+                submitButton.dataset.originalText =
+                    submitButton.innerHTML;
+
+                submitButton.innerHTML =
+                    "⟳ Processing...";
+            } else {
+                submitButton.dataset.originalText =
+                    submitButton.value;
+
+                submitButton.value =
+                    "Processing...";
+            }
+        }
+    });
+    // Show loading spinner when navigating to another page
+    document.addEventListener("click", function (event) {
+        const link = event.target.closest("a");
+        if (!link) return;
+        const href = link.getAttribute("href");
+
+        // Ignore links that should not show loading
+        if (
+            !href ||
+            href.startsWith("#") ||
+            href.startsWith("javascript:") ||
+            link.target === "_blank" ||
+            href.startsWith("http")
+        ) {
+            return;
+        }
+
+        const overlay =
+            document.getElementById("loading-overlay");
+
+        if (overlay) {
+            overlay.style.display = "flex";
+        }
+    });
+</script>
