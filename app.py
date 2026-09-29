@@ -7,6 +7,7 @@ from datetime import datetime
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from werkzeug.security import (generate_password_hash, check_password_hash)
+import os
 app = Flask(__name__)
 app.secret_key = "student_project_secret"
 app.permanent_session_lifetime = timedelta(minutes=30)
@@ -23,7 +24,7 @@ from reportlab.lib.styles import (
 risk_model = joblib.load(
     "academic_risk_model.pkl"
 )
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://neondb_owner:npg_4Bfu9hIAocQz@ep-spring-paper-ap35peui.c-7.us-east-1.aws.neon.tech/neondb?sslmode=require"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True
