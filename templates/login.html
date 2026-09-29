@@ -13,6 +13,10 @@
 </head>
 
 <body>
+    <!-- LOGIN LOADING OVERLAY -->
+<div id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
 {% include 'flash_messages.html' %}
 <div class="container mt-5">
 
@@ -124,6 +128,31 @@ function togglePassword() {
     }
 }
 
+</script>
+<script>
+    document.addEventListener("submit", function (event) {
+
+        const form = event.target;
+        const overlay = document.getElementById("loading-overlay");
+
+        if (overlay) {
+            overlay.style.display = "flex";
+        }
+
+        const submitButton = form.querySelector(
+            'button[type="submit"], input[type="submit"]'
+        );
+
+        if (submitButton) {
+            submitButton.disabled = true;
+
+            submitButton.dataset.originalText =
+                submitButton.innerHTML;
+
+            submitButton.innerHTML =
+                "⟳ Logging in...";
+        }
+    });
 </script>
 </body>
 </html>

@@ -664,8 +664,8 @@ def delete_student(roll_number):
     return redirect("/view_students")
     
 # DELETE GRADE
-@app.route("/delete_grade/<roll_number>/<subject>")
-def delete_grade(roll_number, subject):
+@app.route("/delete_grade/<roll_number>/<subject>/<semester>")
+def delete_grade(roll_number, subject, semester):
 
     if "user" not in session:
         return redirect("/login")
@@ -676,7 +676,6 @@ def delete_grade(roll_number, subject):
             f"/student/{session['roll_number']}"
         )
 
-    # FIND STUDENT
     student = Student.query.filter_by(
         roll_number=roll_number
     ).first()
@@ -685,10 +684,10 @@ def delete_grade(roll_number, subject):
         flash("Student not found!", "danger")
         return redirect("/view_students")
 
-    # FIND GRADE
     grade_obj = Grade.query.filter_by(
         student_id=student.id,
-        subject=subject
+        subject=subject,
+        semester=semester
     ).first()
 
     if grade_obj:
@@ -699,26 +698,28 @@ def delete_grade(roll_number, subject):
 
         log_activity(
             f"🗑️ Grade deleted: {student.name} - "
-            f"{subject} ({old_grade})"
+            f"{subject} - Semester {semester} "
+            f"({old_grade})"
         )
 
         flash(
             "Subject Deleted Successfully!",
             "danger"
         )
-
     else:
         flash(
             "Subject not found!",
             "warning"
         )
 
-    return redirect(f"/student/{roll_number}")
+    return redirect(
+        f"/student/{roll_number}"
+    )
 
 # EDIT GRADE
-@app.route("/edit_grade/<roll_number>/<subject>", methods=["GET", "POST"])
-def edit_grade(roll_number, subject):
-
+@app.route("/edit_grade/<roll_number>/<subject>/<semester>",methods=["GET", "POST"])
+def edit_grade(roll_number, subject, semester):
+    roll_number = roll_number.strip().upper()
     if "user" not in session:
         return redirect("/login")
     if session.get("role") != "admin":
@@ -726,7 +727,6 @@ def edit_grade(roll_number, subject):
         return redirect(
             f"/student/{session['roll_number']}"
         )
-
     # FIND STUDENT
     student = Student.query.filter_by(
         roll_number=roll_number
@@ -734,38 +734,53 @@ def edit_grade(roll_number, subject):
     if not student:
         return "Student not found!"
     # FIND GRADE
-    grade_obj = Grade.query.filter_by(
-        student_id=student.id,
-        subject=subject
-    ).first()
+    grade_obj = Grade.query.filter_by(student_id=student.id,subject=subject,semester=semester).first()
+
     if not grade_obj:
         return "Grade not found!"
     # UPDATE
     if request.method == "POST":
         new_grade = float(
-            request.form["new_grade"])
+            request.form["new_grade"]
+        )
         # VALIDATION
         if new_grade < 0 or new_grade > 100:
-            flash("Grade must be between 0 and 100","danger" )
+            flash(
+                "Grade must be between 0 and 100",
+                "danger"
+            )
             return redirect(
-                f"/edit_grade/{roll_number}/{subject}" )
+                f"/edit_grade/{roll_number}/{subject}/{semester}"
+            )
+
         # UPDATE DATABASE
         old_grade = grade_obj.grade
         grade_obj.grade = new_grade
+
         db.session.commit()
 
         log_activity(
-            f"✏️ Grade updated: {student.name} - {subject} "
+            f"✏️ Grade updated: {student.name} - "
+            f"{subject} - Semester {semester} "
             f"({old_grade} → {new_grade})"
         )
-        flash("Grade Updated Successfully!", "warning")
 
-        return redirect(f"/student/{roll_number}" )
+        flash(
+            "Grade Updated Successfully!",
+            "warning"
+        )
+
+        return redirect(
+            f"/student/{roll_number}"
+        )
     return render_template(
         "edit_grade.html",
         roll_number=roll_number,
         subject=subject,
-        current_grade=grade_obj.grade)
+        semester=semester,
+        current_grade=grade_obj.grade
+    )
+
 
 # ADD STUDENT
 @app.route("/add_student", methods=["GET", "POST"])
@@ -780,7 +795,7 @@ def add_student():
         )
     if request.method == "POST":
         name = request.form["name"].strip().title()
-        roll_number = request.form["roll_number"]
+        roll_number = request.form["roll_number"].strip().upper()
         branch = request.form["branch"]
         section = request.form["section"]
         # NAME VALIDATION
@@ -825,7 +840,7 @@ def add_grade():
             f"/student/{session['roll_number']}"
         )
     if request.method == "POST":
-        roll_number = request.form["roll_number"]
+        roll_number = request.form["roll_number"].strip().upper()
         subject = request.form["subject"].strip().title()
         grade = float(request.form["grade"])
         semester = request.form["semester"]
@@ -871,7 +886,7 @@ def add_grade():
 def get_student(roll_number):
 
     student = Student.query.filter_by(
-        roll_number=roll_number
+        roll_number=roll_number.strip().upper()
     ).first()
 
     if student:
@@ -888,6 +903,7 @@ def get_student(roll_number):
 # STUDENT PROFILE PAGE
 @app.route("/student/<roll_number>")
 def student_profile(roll_number):
+    roll_number = roll_number.strip().upper()
     if "user" not in session:
         return redirect("/login")
     

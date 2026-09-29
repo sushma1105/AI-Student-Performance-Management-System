@@ -31,30 +31,45 @@
             </p>
         </div>
         <div class="row g-3 mb-4">
+            <!-- Overall GPA -->
             <div class="col-md-3">
                 <div class="card shadow-sm text-center">
                     <div class="card-body">
                         <h6 class="text-muted">
                             Overall GPA
                         </h6>
-                        <h3 class="text-primary">
-                            {{ gpa }}
-                        </h3>
+                        {% if student.grades %}
+                            <h3 class="text-primary">
+                                {{ gpa }}
+                            </h3>
+                        {% else %}
+                            <h3 class="text-muted">
+                                —
+                            </h3>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            <!-- Average Grade -->
             <div class="col-md-3">
                 <div class="card shadow-sm text-center">
                     <div class="card-body">
                         <h6 class="text-muted">
                             Average Grade
                         </h6>
-                        <h3 class="text-success">
-                            {{ "%.2f"|format(average) }}
-                        </h3>
+                        {% if student.grades %}
+                            <h3 class="text-success">
+                                {{ "%.2f"|format(average) }}
+                            </h3>
+                        {% else %}
+                            <h3 class="text-muted">
+                                —
+                            </h3>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+            <!-- Attendance -->
             <div class="col-md-3">
                 <div class="card shadow-sm text-center">
                     <div class="card-body">
@@ -67,31 +82,30 @@
                     </div>
                 </div>
             </div>
+            <!-- Risk -->
             <div class="col-md-3">
                 <div class="card shadow-sm text-center">
                     <div class="card-body">
                         <h6 class="text-muted">
                             Risk
                         </h6>
-                    {% if risk_prediction == "Low Risk" %}
-
-                    <span class="badge bg-success fs-6">
-                        Low Risk
-                    </span>
-
-                    {% elif risk_prediction == "Medium Risk" %}
-
-                    <span class="badge bg-warning text-dark fs-6">
-                        Medium Risk
-                    </span>
-
-                    {% else %}
-
-                    <span class="badge bg-danger fs-6">
-                        High Risk
-                    </span>
-
-                    {% endif %}    
+                        {% if not student.grades %}
+                            <span class="badge bg-secondary fs-6">
+                                No Data
+                            </span>
+                        {% elif risk_prediction == "Low Risk" %}
+                            <span class="badge bg-success fs-6">
+                                Low Risk
+                            </span>
+                        {% elif risk_prediction == "Medium Risk" %}
+                            <span class="badge bg-warning text-dark fs-6">
+                                Medium Risk
+                            </span>
+                        {% else %}
+                            <span class="badge bg-danger fs-6">
+                                High Risk
+                            </span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -175,54 +189,61 @@
                 </span>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Subject</th>
-                            <th>Grade</th>
-                            {% if session.get("role") == "admin" %}
-                            <th>Actions</th>
-                            {% endif %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for grade in grades_list %}
-                        <tr>
-                            <td>{{ grade.subject }}</td>
-                            <td>
-                                {{ grade.grade }}
-                                <div class="progress mt-2">
-                                    <div
-                                        class="progress-bar
-                                        {% if grade.grade >= 80 %}
-                                            bg-success
-                                        {% elif grade.grade >= 50 %}
-                                            bg-warning
-                                        {% else %}
-                                            bg-danger
-                                        {% endif %}"
-                                        role="progressbar"
-                                        style="width: {{ grade.grade }}%;">
-                                        {{ grade.grade }}%
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Subject</th>
+                                <th>Grade</th>
+                                {% if session.get("role") == "admin" %}
+                                <th>Actions</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for grade in grades_list %}
+                            <tr>
+                                <td>{{ grade.subject }}</td>
+
+                                <td>
+                                    {{ grade.grade }}
+
+                                    <div class="progress mt-2">
+                                        <div
+                                            class="progress-bar
+                                            {% if grade.grade >= 80 %}
+                                                bg-success
+                                            {% elif grade.grade >= 50 %}
+                                                bg-warning
+                                            {% else %}
+                                                bg-danger
+                                            {% endif %}"
+                                            role="progressbar"
+                                            style="width: {{ grade.grade }}%;">
+                                            {{ grade.grade }}%
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            {% if session.get("role") == "admin" %}
-                            <td>
-                                <a href="/edit_grade/{{ student.roll_number }}/{{ grade.subject }}"
-                                class="btn btn-outline-secondary btn-sm">
-                                    Edit
-                                </a>
-                                <a href="/delete_grade/{{ student.roll_number }}/{{ grade.subject }}"
-                                class="btn btn-danger btn-sm">
-                                    Delete
-                                </a>
-                            </td>
-                            {% endif %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+
+                                {% if session.get("role") == "admin" %}
+                                <td class="text-nowrap">
+                                    <a href="/edit_grade/{{ student.roll_number }}/{{ grade.subject }}/{{ grade.semester }}"
+                                    class="btn btn-outline-secondary btn-sm">
+                                        Edit
+                                    </a>
+                                    <a href="/delete_grade/{{ student.roll_number }}/{{ grade.subject }}/{{grade.semester}}"
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Are you sure you want to delete this grade?');">
+                                        Delete
+                                    </a>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         {% endfor %}
