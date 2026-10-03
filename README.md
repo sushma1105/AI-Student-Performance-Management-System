@@ -1,66 +1,168 @@
 # 🎓 AI-Powered Student Performance Management System
 
-A full-stack AI-powered web application for managing student records, analyzing academic performance, detecting weak subjects, and generating intelligent performance insights using Flask, SQLite, and Machine Learning.
+A full-stack web application for managing student academic records, analyzing performance, tracking attendance, and generating AI-based academic insights.
 
-# 🚀 Features
+The system provides separate student and admin workflows, semester-wise grade management, interactive analytics, academic risk prediction, activity tracking, and downloadable student report cards.
 
-## 👨‍🎓 Student Management
-- Add Students
-- Delete Students
-- Search Students
-- View Student Profiles
+## 🚀 Live Demo
 
-## 📚 Grade Management
-- Add Grades
-- Edit Grades
-- Delete Subjects
-- Calculate Average Grades
+**Deployed Application:**
+https://ai-student-performance-management-system-ioyu.onrender.com
 
-## 📊 Analytics Dashboard
-- Subject Performance Charts
-- Class Average Calculation
-- Top Performer Detection
-- Student Performance Visualization
-
-## 🤖 AI Features
-- AI-Based Performance Analysis
-- Weak Subject Detection
-- Intelligent Academic Insights
-- Performance Risk Prediction
-
-## 🔐 Authentication
-- Admin Login System
-- Session Management
-- Logout Functionality
+> The application uses PostgreSQL through Neon for persistent database storage and is deployed on Render.
 
 ---
 
-# 🛠️ Technologies Used
+## ✨ Features
 
-## Frontend
-- HTML5
-- CSS3
-- Bootstrap 5
-- Chart.js
+### 👨‍🎓 Student Management
 
-## Backend
-- Python
-- Flask
+* Add and manage student records
+* Search students by roll number
+* View detailed student profiles
+* Manage branch and section information
+* Delete student records with confirmation
 
-## Database
-- SQLite
+### 📚 Grade Management
 
-## AI / Machine Learning
-- Scikit-learn
-- Pandas
-- NumPy
+* Add, edit, and delete student grades
+* Semester-wise grade management
+* Grade validation from 0–100
+* Duplicate subject prevention within the same semester
+* Automatic performance calculations
+* Semester-wise academic records
+
+### 📊 Analytics Dashboard
+
+* Class average calculation
+* Top performer identification
+* Subject-wise performance analysis
+* Student performance visualization
+* Attendance tracking
+* Branch and semester filtering
+* Academic risk statistics
+* Interactive charts and dashboards
+
+### 🤖 AI & Machine Learning
+
+* AI-based academic performance analysis
+* Weak subject identification
+* Intelligent academic insights
+* Academic performance risk prediction
+* Machine learning model integration using Scikit-learn
+* Student performance data analysis using Pandas and NumPy
+
+### 📄 Student Report Cards
+
+* Generate student report cards
+* Download report cards as PDF
+* Include academic performance information in generated reports
+
+### 🔐 Authentication & Security
+
+* Admin authentication
+* Student authentication
+* Session-based access control
+* Logout protection
+* Password visibility toggle
+* Database credentials stored through environment variables
+
+### 📝 Activity Tracking
+
+* Record important system activities
+* Track activity timestamps
+* Admin activity monitoring page
+
+### 🎨 User Experience
+
+* Responsive interface
+* Loading indicators and spinners
+* Success and error messages
+* Empty-state messages
+* Delete confirmations
+* Mobile-friendly layouts
+* Interactive charts
 
 ---
 
-# 📂 Project Structure
+## 🛠️ Technology Stack
 
-```bash
+### Frontend
+
+* HTML5
+* CSS3
+* Bootstrap 5
+* JavaScript
+* Chart.js
+
+### Backend
+
+* Python
+* Flask
+* Flask-SQLAlchemy
+
+### Database
+
+* PostgreSQL
+* Neon PostgreSQL
+* psycopg / psycopg2
+
+### Machine Learning & Data Processing
+
+* Scikit-learn
+* Pandas
+* NumPy
+* Joblib
+* Matplotlib
+
+### PDF Generation
+
+* ReportLab
+
+### Deployment
+
+* Render
+* Gunicorn
+
+---
+
+## 🏗️ Project Architecture
+
+```text
+User
+ │
+ ▼
+Frontend
+HTML / CSS / JavaScript / Bootstrap / Chart.js
+ │
+ ▼
+Flask Application
+ │
+ ├── Authentication
+ ├── Student Management
+ ├── Grade Management
+ ├── Attendance
+ ├── Analytics
+ ├── AI Performance Analysis
+ ├── Academic Risk Prediction
+ ├── Activity Tracking
+ └── PDF Report Generation
+ │
+ ▼
+SQLAlchemy
+ │
+ ▼
+Neon PostgreSQL
+```
+
+---
+
+## 📂 Project Structure
+
+```text
 AI-Student-Performance-Management-System/
+│
+├── Screenshots/
 │
 ├── static/
 │   └── style.css
@@ -73,87 +175,212 @@ AI-Student-Performance-Management-System/
 │   ├── student_profile.html
 │   ├── view_students.html
 │   ├── edit_grade.html
-│   └── update_grade.html
+│   ├── update_grade.html
+│   └── ...
 │
+├── academic_risk_model.pkl
 ├── app.py
 ├── database.py
-├── tracker.py
+├── models.py
+├── main.py
 ├── student.py
-├── students.db
+├── tracker.py
+├── requirements.txt
+├── Procfile
+├── .gitignore
 └── README.md
 ```
 
 ---
 
-# ⚙️ Installation & Setup
+## ⚙️ Local Installation & Setup
 
-## 1️⃣ Clone Repository
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/sushma1105/AI-Student-Performance-Management-System.git
 ```
 
-## 2️⃣ Open Project Folder
+### 2. Open the Project
 
 ```bash
 cd AI-Student-Performance-Management-System
----
-
-## 3️⃣ Install Dependencies
-
-```bash
-pip install flask pandas numpy scikit-learn
 ```
 
-## 4️⃣ Run Application
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate it on Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### 4. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Configure the Database
+
+The application uses a PostgreSQL database through the `DATABASE_URL` environment variable.
+
+On Windows PowerShell:
+
+```powershell
+$env:DATABASE_URL="YOUR_POSTGRESQL_CONNECTION_STRING"
+```
+
+Do **not** commit database credentials or passwords to GitHub.
+
+### 6. Run the Application
 
 ```bash
 python app.py
 ```
 
-# 🌐 Open in Browser
+### 7. Open in Browser
 
 ```text
 http://127.0.0.1:5000
 ```
 
-# 🔑 Default Login Credentials
+---
 
-| Username | Password |
-|----------|----------|
-| admin | admin123 |
+## 🔑 Demo Login
+
+### Admin
+- **Username:** `admin`
+- **Password:** `admin123`
+
+> These credentials are provided for demonstration purposes only.
+> Do not use these credentials for production or sensitive data.
+
+
+## 🌐 Deployment
+
+The application is deployed using **Render**.
+
+### Build Command
+
+```bash
+pip install -r requirements.txt
+```
+
+### Start Command
+
+```bash
+gunicorn app:app --bind 0.0.0.0:$PORT
+```
+
+### Environment Variable
+
+The production database connection is configured through:
+
+```text
+DATABASE_URL
+```
+
+Database credentials are stored as environment variables rather than hard-coded in the application source code.
 
 ---
 
-# 📸 Screenshots
+## 🗄️ Database
 
-## Dashboard
-![Dashboard](Screenshots/Dashboard.png)
+The application uses **PostgreSQL with Neon**.
 
-## Login
-![Login](Screenshots/Login_Page.png)
+The database stores:
 
-## Student Profile
-![Profile](Screenshots/Student_Profile.png)
+* Student records
+* Student authentication information
+* Grades
+* Semester information
+* Attendance
+* Admin information
+* Activity records
 
-## AI Analysis
-![AI Analysis](Screenshots/AI_analysis.png)
+Grades use a uniqueness constraint based on:
 
----
+```text
+student + subject + semester
+```
 
-# 🎯 Future Improvements
-
-- Cloud Deployment
-- Email Notifications
-- Export Reports as PDF
-- Advanced AI Predictions
-- Multi-Admin Support
-- Student Attendance Tracking
----
-
-# 👩‍💻 Developed By
-Yesaswi Sushma Peela
+This allows the same subject to exist for different semesters while preventing duplicate entries within the same semester.
 
 ---
 
-# ⭐ If you like this project, give it a star on GitHub!
+## 🧠 Machine Learning Model
+
+The project includes an academic risk prediction model:
+
+```text
+academic_risk_model.pkl
+```
+
+The model is integrated into the Flask application using Joblib and Scikit-learn.
+
+The application uses student academic information to provide performance and academic-risk insights.
+
+---
+
+## 📸 Screenshots
+
+Screenshots of the application are available in the:
+
+```text
+Screenshots/
+```
+
+folder.
+
+### Dashboard
+
+### Login
+
+### Student Profile
+
+### Grade Management
+
+### AI Performance Analysis
+
+### Student Report Card
+
+---
+
+## 🔒 Security Notes
+
+* Database credentials are stored using environment variables.
+* `.env` files are excluded through `.gitignore`.
+* Production database credentials should never be committed to GitHub.
+* No default production credentials are documented in this repository.
+
+---
+
+## 🔮 Future Enhancements
+
+Possible future improvements include:
+
+* Email notifications for students and administrators
+* Automated model retraining pipeline
+* More advanced academic prediction models
+* Automated testing and CI/CD
+* More granular role-based permissions
+* Additional analytics and reporting features
+
+---
+
+## 👩‍💻 Developed By
+
+**Yesaswi Sushma Peela**
+
+B.Tech — Artificial Intelligence & Data Science
+
+---
+
+## ⭐ Project
+
+If you find this project useful, consider giving the repository a ⭐ on GitHub.
