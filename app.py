@@ -4,6 +4,7 @@ from models import (db, Student, Grade, Admin, Activity)
 import joblib
 from datetime import timedelta
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from werkzeug.security import (generate_password_hash, check_password_hash)
@@ -560,7 +561,7 @@ def home():
         selected_branch=selected_branch,
         semesters=semesters,
         branches=branches,
-        last_updated=datetime.now(),
+        last_updated=datetime.now(ZoneInfo("Asia/Kolkata")),
         recent_activities=recent_activities, )
 #view activity
 @app.route("/activity")
