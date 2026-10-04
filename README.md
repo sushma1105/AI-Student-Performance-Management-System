@@ -259,7 +259,9 @@ http://127.0.0.1:5000
 
 > These credentials are provided for demonstration purposes only.
 > Do not use these credentials for production or sensitive data.
+```
 
+---
 
 ## 🌐 Deployment
 
@@ -329,27 +331,32 @@ The application uses student academic information to provide performance and aca
 
 ## 📸 Screenshots
 
-Screenshots of the application are available in the:
+### 📊 Dashboard
 
-```text
-Screenshots/
-```
+The dashboard provides an overview of student performance, attendance, class average, top performer, and academic risk.
 
-folder.
+![Dashboard](Screenshots/Dashboard.png)
 
-### Dashboard
+### 📈 Performance & Academic Risk Analytics
 
-### Login
+Interactive charts display subject-wise performance and academic risk distribution.
 
-### Student Profile
+![Analytics](Screenshots/analytics.png)
 
-### Grade Management
+### 🤖 AI Performance Analysis
 
-### AI Performance Analysis
+The system provides AI-based academic performance analysis and recommendations.
 
-### Student Report Card
+![AI Performance Analysis](Screenshots/Ai_Performance_analysis.png)
+
+### 👨‍🎓 Student Profile
+
+The student profile includes attendance, AI insights, semester-wise academic performance, GPA, and grades.
+
+![Student Profile](Screenshots/Student_Profile.png)
 
 ---
+
 
 ## 🔒 Security Notes
 
