@@ -1,15 +1,15 @@
 # 🎓 AI-Powered Student Performance Management System
 
-A full-stack web application for managing student academic records, analyzing performance, tracking attendance, and generating AI-based academic insights.
+A full-stack web application for managing student academic records, analyzing performance, tracking attendance, and providing AI-based academic insights.
 
-The system provides separate student and admin workflows, semester-wise grade management, interactive analytics, academic risk prediction, activity tracking, and downloadable student report cards.
+The system supports student management, semester-wise grade management, interactive analytics, academic risk prediction, activity tracking, and downloadable student report cards.
 
 ## 🚀 Live Demo
 
-**Deployed Application:**
+**Deployed Application:**  
 https://ai-student-performance-management-system-ioyu.onrender.com
 
-> The application uses PostgreSQL through Neon for persistent database storage and is deployed on Render.
+> The application is deployed on Render and uses PostgreSQL through Neon for persistent database storage.
 
 ---
 
@@ -17,71 +17,110 @@ https://ai-student-performance-management-system-ioyu.onrender.com
 
 ### 👨‍🎓 Student Management
 
-* Add and manage student records
-* Search students by roll number
-* View detailed student profiles
-* Manage branch and section information
-* Delete student records with confirmation
+- Add and manage student records
+- Search students by roll number
+- View detailed student profiles
+- Manage branch and section information
+- Delete student records with confirmation
 
 ### 📚 Grade Management
 
-* Add, edit, and delete student grades
-* Semester-wise grade management
-* Grade validation from 0–100
-* Duplicate subject prevention within the same semester
-* Automatic performance calculations
-* Semester-wise academic records
+- Add, edit, and delete grades
+- Semester-wise grade management
+- Grade validation from 0–100
+- Prevent duplicate subjects within the same semester
+- Automatic performance calculations
+- Semester-wise academic records
 
 ### 📊 Analytics Dashboard
 
-* Class average calculation
-* Top performer identification
-* Subject-wise performance analysis
-* Student performance visualization
-* Attendance tracking
-* Branch and semester filtering
-* Academic risk statistics
-* Interactive charts and dashboards
+- Class average calculation
+- Top performer identification
+- Subject-wise performance analysis
+- Student performance visualization
+- Attendance tracking
+- Semester and branch filtering
+- Academic risk statistics
+- Interactive charts
 
 ### 🤖 AI & Machine Learning
 
-* AI-based academic performance analysis
-* Weak subject identification
-* Intelligent academic insights
-* Academic performance risk prediction
-* Machine learning model integration using Scikit-learn
-* Student performance data analysis using Pandas and NumPy
+- AI-based academic performance analysis
+- Weak subject identification
+- Academic recommendations
+- Academic performance risk prediction
+- Machine learning model integration using Scikit-learn
+- Student performance data analysis using Pandas and NumPy
 
 ### 📄 Student Report Cards
 
-* Generate student report cards
-* Download report cards as PDF
-* Include academic performance information in generated reports
+- Generate student report cards
+- Download report cards as PDF
+- Include academic performance information in generated reports
 
 ### 🔐 Authentication & Security
 
-* Admin authentication
-* Student authentication
-* Session-based access control
-* Logout protection
-* Password visibility toggle
-* Database credentials stored through environment variables
+- Admin authentication
+- Student authentication
+- Session-based access control
+- Logout protection
+- Password visibility toggle
+- Database credentials managed through environment variables
 
 ### 📝 Activity Tracking
 
-* Record important system activities
-* Track activity timestamps
-* Admin activity monitoring page
+- Record important system activities
+- Track activity timestamps
+- Admin activity monitoring
 
 ### 🎨 User Experience
 
-* Responsive interface
-* Loading indicators and spinners
-* Success and error messages
-* Empty-state messages
-* Delete confirmations
-* Mobile-friendly layouts
-* Interactive charts
+- Responsive interface
+- Loading indicators and spinners
+- Success and error messages
+- Empty-state messages
+- Delete confirmations
+- Mobile-friendly layouts
+- Interactive charts
+
+---
+
+## 🔑 Demo Login
+
+### Admin
+
+- **Username:** `admin`
+- **Password:** `admin123`
+
+> These credentials are provided for demonstration purposes only. Do not use them for production or sensitive data.
+
+---
+
+## 📸 Screenshots
+
+### 📊 Dashboard
+
+The dashboard provides an overview of student performance, attendance, class average, top performer, and academic risk.
+
+![Dashboard](Screenshots/Dashboard.png)
+
+### 📈 Performance & Academic Risk Analytics
+
+Interactive charts display subject-wise performance and academic risk distribution.
+
+![Analytics](Screenshots/analytics.png)
+
+### 🤖 AI Performance Analysis
+
+The system provides AI-based academic performance analysis and recommendations.
+
+![AI Performance Analysis](Screenshots/Ai_Performance_analysis.png)
+
+### 👨‍🎓 Student Profile
+
+The student profile includes attendance, AI insights, semester-wise academic performance, GPA, and grades.
+
+![Student Profile](Screenshots/Student_Profile.png)
 
 ---
 
@@ -89,40 +128,41 @@ https://ai-student-performance-management-system-ioyu.onrender.com
 
 ### Frontend
 
-* HTML5
-* CSS3
-* Bootstrap 5
-* JavaScript
-* Chart.js
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+- Chart.js
 
 ### Backend
 
-* Python
-* Flask
-* Flask-SQLAlchemy
+- Python
+- Flask
+- Flask-SQLAlchemy
 
 ### Database
 
-* PostgreSQL
-* Neon PostgreSQL
-* psycopg / psycopg2
+- PostgreSQL
+- Neon PostgreSQL
+- psycopg
+- psycopg2
 
 ### Machine Learning & Data Processing
 
-* Scikit-learn
-* Pandas
-* NumPy
-* Joblib
-* Matplotlib
+- Scikit-learn
+- Pandas
+- NumPy
+- Joblib
+- Matplotlib
 
 ### PDF Generation
 
-* ReportLab
+- ReportLab
 
 ### Deployment
 
-* Render
-* Gunicorn
+- Render
+- Gunicorn
 
 ---
 
@@ -163,6 +203,10 @@ Neon PostgreSQL
 AI-Student-Performance-Management-System/
 │
 ├── Screenshots/
+│   ├── Dashboard.png
+│   ├── analytics.png
+│   ├── AI_Performance_analysis.png
+│   └── Student_Profile.png
 │
 ├── static/
 │   └── style.css
@@ -175,7 +219,6 @@ AI-Student-Performance-Management-System/
 │   ├── student_profile.html
 │   ├── view_students.html
 │   ├── edit_grade.html
-│   ├── update_grade.html
 │   └── ...
 │
 ├── academic_risk_model.pkl
@@ -227,7 +270,7 @@ pip install -r requirements.txt
 
 ### 5. Configure the Database
 
-The application uses a PostgreSQL database through the `DATABASE_URL` environment variable.
+The application uses PostgreSQL through the `DATABASE_URL` environment variable.
 
 On Windows PowerShell:
 
@@ -235,7 +278,7 @@ On Windows PowerShell:
 $env:DATABASE_URL="YOUR_POSTGRESQL_CONNECTION_STRING"
 ```
 
-Do **not** commit database credentials or passwords to GitHub.
+> Do not commit database credentials or passwords to GitHub.
 
 ### 6. Run the Application
 
@@ -247,18 +290,6 @@ python app.py
 
 ```text
 http://127.0.0.1:5000
-```
-
----
-
-## 🔑 Demo Login
-
-### Admin
-- **Username:** `admin`
-- **Password:** `admin123`
-
-> These credentials are provided for demonstration purposes only.
-> Do not use these credentials for production or sensitive data.
 ```
 
 ---
@@ -281,7 +312,7 @@ gunicorn app:app --bind 0.0.0.0:$PORT
 
 ### Environment Variable
 
-The production database connection is configured through:
+The production database connection is configured using:
 
 ```text
 DATABASE_URL
@@ -297,13 +328,13 @@ The application uses **PostgreSQL with Neon**.
 
 The database stores:
 
-* Student records
-* Student authentication information
-* Grades
-* Semester information
-* Attendance
-* Admin information
-* Activity records
+- Student records
+- Student authentication information
+- Grades
+- Semester information
+- Attendance
+- Admin information
+- Activity records
 
 Grades use a uniqueness constraint based on:
 
@@ -329,41 +360,12 @@ The application uses student academic information to provide performance and aca
 
 ---
 
-## 📸 Screenshots
-
-### 📊 Dashboard
-
-The dashboard provides an overview of student performance, attendance, class average, top performer, and academic risk.
-
-![Dashboard](Screenshots/Dashboard.png)
-
-### 📈 Performance & Academic Risk Analytics
-
-Interactive charts display subject-wise performance and academic risk distribution.
-
-![Analytics](Screenshots/analytics.png)
-
-### 🤖 AI Performance Analysis
-
-The system provides AI-based academic performance analysis and recommendations.
-
-![AI Performance Analysis](Screenshots/Ai_Performance_analysis.png)
-
-### 👨‍🎓 Student Profile
-
-The student profile includes attendance, AI insights, semester-wise academic performance, GPA, and grades.
-
-![Student Profile](Screenshots/Student_Profile.png)
-
----
-
-
 ## 🔒 Security Notes
 
-* Database credentials are stored using environment variables.
-* `.env` files are excluded through `.gitignore`.
-* Production database credentials should never be committed to GitHub.
-* No default production credentials are documented in this repository.
+- Database credentials are stored using environment variables.
+- `.env` files are excluded through `.gitignore`.
+- Production database credentials should never be committed to GitHub.
+- The credentials listed above are demonstration credentials for the public demo application only.
 
 ---
 
@@ -371,12 +373,12 @@ The student profile includes attendance, AI insights, semester-wise academic per
 
 Possible future improvements include:
 
-* Email notifications for students and administrators
-* Automated model retraining pipeline
-* More advanced academic prediction models
-* Automated testing and CI/CD
-* More granular role-based permissions
-* Additional analytics and reporting features
+- Email notifications for students and administrators
+- Automated model retraining pipeline
+- More advanced academic prediction models
+- Automated testing and CI/CD
+- More granular role-based permissions
+- Additional analytics and reporting features
 
 ---
 
